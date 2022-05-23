@@ -2,12 +2,23 @@
 const express = require('express');
 // import express from 'express'; // Importe de ECMASCRIPT6
 
+// Router de express para diferenciar entre peticiones
+const router = express.Router();
+
 // Inicializamos nuestro express
 var app = express();
 
-// Nuestra app va estar escuchando cada vez que llamen a '/' y va a responder "Hola"
-app.use('/', (req,res)=>{
-    res.send('Hola');
+// Añadimos el router a la aplicación de express
+app.use(router);
+
+// Configuro respuesta para una petición get a la dirección "/message"
+router.get('/message',(req,res)=>{
+    res.send('Lista de mensajes');
+});
+
+// Configuro respuesta para una petición post a la dirección "/message"
+router.post('/message',(req,res)=>{
+    res.send('Mensaje añadido');
 });
 
 // Se escucha por el puerto 3000
