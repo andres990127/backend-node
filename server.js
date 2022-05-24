@@ -31,7 +31,8 @@ router.get('/message',(req,res)=>{
 router.post('/message',(req,res)=>{
     console.log(req.body);
     console.log(req.query);
-    res.send('Mensaje ' + req.body.text +' añadido correctamente');
+    //res.send('Mensaje ' + req.body.text +' añadido correctamente');
+    res.status(201).send({'Error':'', 'Mensaje':'Creado correctamente'}); // Responder con 201 y un json
 });
 
 // Se escucha por el puerto 3000
