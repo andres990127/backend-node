@@ -43,6 +43,8 @@ router.post('/message',(req,res)=>{
     }
 });
 
+app.use('/app', express.static('public'));
+
 // Se escucha por el puerto 3000
 app.listen(3000);
 console.log('La aplicación está escuchando en http://localhost:3000');
