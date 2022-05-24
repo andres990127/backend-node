@@ -37,12 +37,13 @@ router.post('/message',(req,res)=>{
 
     // Se simula un error si nos biene un 'OK' en el query
     if(req.query.error == 'OK'){
-        response.error(req, res, 'Error simulado', 400); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de fallo
+        response.error(req, res, 'Error inesperado', 500, 'Es solo una simulación de los errores'); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de fallo
     } else{
         response.success(req, res, 'Creado correctamente', 201); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
     }
 });
 
+// Hacemos público una carpeta "Public" para que todo lo que se encuentre en ella se pueda acceder por link: http://localhost:3000/app/index.html
 app.use('/app', express.static('public'));
 
 // Se escucha por el puerto 3000

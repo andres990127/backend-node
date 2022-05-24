@@ -7,7 +7,8 @@ exports.success = (req, res, message, status)=>{
 };
 
 // Función estandar para dar respuestas con error
-exports.error = (req, res, message, status)=>{
+exports.error = (req, res, message, status, details)=>{
+    console.error('[Respone error] '+ details); // Es buena práctica guardar el error detallado en el log pero no mostrarlo al cliente
     res.status(status || 500).send({ // Si no recibo status envio 500 por defecto y envio un JSON con error y con el mensaje en 'error' 
         "error": message,
         "body": "",
