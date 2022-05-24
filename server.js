@@ -6,6 +6,9 @@ const express = require('express');  // import express from 'express'; => Import
 // Para trabajar con el body de la petición
 const bodyParser = require('body-parser');
 
+// Importamos nuestro modulo de respuestas HTTP
+const response = require('./network/response');
+
 // Router de express para diferenciar entre peticiones
 const router = express.Router();
 
@@ -24,15 +27,20 @@ router.get('/message',(req,res)=>{
     res.header({ // Se pueden responder también cabeceras
         "custom-header": "Nuestro valor personalizado",
     })
-    res.send('Lista de mensajes');
+    response.success(req, res, 'Lista de mensajes'); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
 });
 
 // Configuro respuesta para una petición post a la dirección "/message"
 router.post('/message',(req,res)=>{
     console.log(req.body);
     console.log(req.query);
-    //res.send('Mensaje ' + req.body.text +' añadido correctamente');
-    res.status(201).send({'Error':'', 'Mensaje':'Creado correctamente'}); // Responder con 201 y un json
+
+    // Se simula un error si nos biene un 'OK' en el query
+    if(req.query.error == 'OK'){
+        response.error(req, res, 'Error simulado', 400); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de fallo
+    } else{
+        response.success(req, res, 'Creado correctamente', 201); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
+    }
 });
 
 // Se escucha por el puerto 3000
