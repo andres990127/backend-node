@@ -20,6 +20,10 @@ app.use(router);
 
 // Configuro respuesta para una petición get a la dirección "/message"
 router.get('/message',(req,res)=>{
+    console.log(req.headers); // Se leen las cabeceras de las peticiones
+    res.header({ // Se pueden responder también cabeceras
+        "custom-header": "Nuestro valor personalizado",
+    })
     res.send('Lista de mensajes');
 });
 
