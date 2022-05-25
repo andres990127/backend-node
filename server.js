@@ -6,11 +6,8 @@ const express = require('express');  // import express from 'express'; => Import
 // Para trabajar con el body de la petición
 const bodyParser = require('body-parser');
 
-// Importamos nuestro modulo de respuestas HTTP
-const response = require('./network/response');
-
-// Router de express para diferenciar entre peticiones
-const router = express.Router();
+// Importamos nuestro modulo de rutas
+const router = require('./network/routes');
 
 // Inicializamos nuestro express
 var app = express();
@@ -19,29 +16,7 @@ var app = express();
 app.use(bodyParser.json());
 
 // Añadimos el router a la aplicación de express
-app.use(router);
-
-// Configuro respuesta para una petición get a la dirección "/message"
-router.get('/message',(req,res)=>{
-    console.log(req.headers); // Se leen las cabeceras de las peticiones
-    res.header({ // Se pueden responder también cabeceras
-        "custom-header": "Nuestro valor personalizado",
-    })
-    response.success(req, res, 'Lista de mensajes'); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
-});
-
-// Configuro respuesta para una petición post a la dirección "/message"
-router.post('/message',(req,res)=>{
-    console.log(req.body);
-    console.log(req.query);
-
-    // Se simula un error si nos biene un 'OK' en el query
-    if(req.query.error == 'OK'){
-        response.error(req, res, 'Error inesperado', 500, 'Es solo una simulación de los errores'); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de fallo
-    } else{
-        response.success(req, res, 'Creado correctamente', 201); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
-    }
-});
+router(app);
 
 // Hacemos público una carpeta "Public" para que todo lo que se encuentre en ella se pueda acceder por link: http://localhost:3000/app/index.html
 app.use('/app', express.static('public'));
