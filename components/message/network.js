@@ -12,11 +12,14 @@ const router = express.Router();
 
 // Configuro respuesta para una petición get a la dirección "/message"
 router.get('/',(req,res)=>{
-    console.log(req.headers); // Se leen las cabeceras de las peticiones
-    res.header({ // Se pueden responder también cabeceras
-        "custom-header": "Nuestro valor personalizado",
-    })
-    response.success(req, res, 'Lista de mensajes'); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
+
+    controller.getMessages()
+        .then((messageList)=>{
+            response.success(req, res, messageList, 200); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
+        })
+        .catch( e => {
+            response.error(req, res, 'Unexpected Error', 500, e); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de fallo
+        });
 });
 
 // Configuro respuesta para una petición post a la dirección "/message"
