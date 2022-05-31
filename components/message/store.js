@@ -29,10 +29,39 @@ async function getMessages(){
     return messages; // Retornamos todos los mensajes obtenidos
 };
 
+// Función para actualizar mensajes de la lista, es asincrona porque demora en pedir la info de la BD
+async function updateText(id, message){
+    const foundMessage = await Model.findOne({ // Obtenemos el registro con el id que nos llega
+        _id: id
+    });
+
+    // Le asignamos el nuevo valor del mensaje
+    foundMessage.message = message;
+
+    // Guardamos el nuevo mensaje
+    const newMessage = await foundMessage.save();
+
+    // Retornamos el valor del nuevo mensaje
+    return newMessage;
+};
+
+// Función para obtener un mensaje de la lista, es asincrona porque demora en pedir la info de la BD
+async function getMessage(id){
+
+    // Obtenemos el mensaje buscandolo por el id que nos llega
+    const foundMessage = await Model.findOne({
+        _id: id
+    });
+
+    // Retornamos el contenido del mensaje
+    return foundMessage;
+};
+
+
 module.exports = {
     add: addMessage,
     list: getMessages,
-    // get
-    // update
+    updateText: updateText,
+    getMessage: getMessage
     // delete
 }
