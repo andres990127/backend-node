@@ -28,11 +28,11 @@ function addMessage(user, message) {
     });
 };
 
-function getMessages() {
+function getMessages(filterUser) {
     
     // Creamos una promesa para avisarle a 'Network' que es el que llama a esta función si ha ocurrido un error
     return new Promise((resolve, reject) => {
-        resolve(store.list());
+        resolve(store.list(filterUser));
     });
 };
 
@@ -74,6 +74,26 @@ function getMessage(id){
         // Resolvemos la promesa con el resultado
         resolve(result);
     });
+};
+
+function deleteMessage(id){
+
+    // Creamos una promesa para avisarle a 'Network' que es el que llama a esta función si ha ocurrido un error
+    return new Promise( async (resolve, reject)=>{
+        
+        // Si no llega el identificador del mensaje a buscar lanzamos error
+        if( !id ){
+            console.error('[MessageController] No se pudo encontrar el mensaje a borrar');
+            reject('El identificador es incorrecto');
+            return false;
+        };
+        
+        // Esperamos a que la función de borrado del mensaje se lleve a cabo
+        const result = await store.deleteMessage(id);
+
+        // Resolvemos la promesa con el resultado
+        resolve(result);
+    });
 }
 
 // Exportamos todos las funciones
@@ -81,5 +101,6 @@ module.exports = {
     addMessage,
     getMessages,
     updateMessage,
-    getMessage
+    getMessage,
+    deleteMessage
 };

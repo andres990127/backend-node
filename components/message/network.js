@@ -14,7 +14,10 @@ const router = express.Router();
 // Configuro respuesta para una petición get a la dirección "/message"
 router.get('/',(req,res)=>{
 
-    controller.getMessages()
+    // Si en el get me llega un query que me diga cual usuario traer entonces lo almaceno en una variable
+    const filterUser = req.query.user || null;
+    
+    controller.getMessages(filterUser)
         .then((messageList)=>{
             response.success(req, res, messageList, 200); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
         })
@@ -47,7 +50,7 @@ router.patch('/:id',(req,res)=>{
         .catch( e => {
             response.error(req, res, "Error interno", 500, e) // Llama a nuestro modulo de response y ejecuta nuestra respuesta de fallo
         })
-})
+});
 
 // Configuro respuesta para una petición get a la dirección "/message", esta deberá venir con el ID del mensaje a buscar
 router.get('/:id',(req,res)=>{
@@ -60,7 +63,20 @@ router.get('/:id',(req,res)=>{
         .catch( e => {
             response.error(req, res, "Error interno", 500, e) // Llama a nuestro modulo de response y ejecuta nuestra respuesta de fallo
         })
-})
+});
+
+// Configuro respuesta para una petición get a la dirección "/message", esta deberá venir con el ID del mensaje a borrar
+router.delete('/:id',(req,res)=>{
+
+    // Esperamos recibir en la url el ID del mensaje a borrar
+    controller.deleteMessage(req.params.id)
+        .then((data)=>{
+            response.success(req, res, "Se ha borrado el mensaje exitosamente", 200); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
+        })
+        .catch( e => {
+            response.error(req, res, "Error interno", 500, e) // Llama a nuestro modulo de response y ejecuta nuestra respuesta de fallo
+        })
+});
 
 // Exportamos todas las rutas
 module.exports = router;

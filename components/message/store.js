@@ -1,21 +1,7 @@
 // Generamos un 'MOK' de una base de datos para igualar su funcionamiento
 
-// Importamos mongoose
-const db = require("mongoose");
-
 // Importamos nuestro modelo definido
 const Model = require('./model');
-
-// Cuando mongoose use promesas va a usar la del scoope global
-db.Promise = global.Promise;
-
-// Hacemos conexión con la base de datos [Creamos version free en mlab.com] 
-db.connect('mongodb+srv://user:user1234@telegrom.x79d4.mongodb.net/?retryWrites=true&w=majority',{
-    useNewUrlParser: true,
-});
-
-// Confirmamos conexión con base de datos
-console.log('[DB] Conectada con éxito');
 
 // Función para añadir mensaje a la lista
 function addMessage(message){
@@ -24,8 +10,18 @@ function addMessage(message){
 };
 
 // Función para obtener mensajes de la lista, es asincrona porque demora en pedir la info de la BD
-async function getMessages(){
-    const messages = await Model.find(); // Obtenemos todos los mensajes con .find vacío y los esperamos
+async function getMessages(filterUser){
+
+    // Filtro para buscar usuarios, solo se llena si en el query se esta enviando un usuario especifico al cual buscarle los mensajes
+    let filter = {};
+
+    // Si existe un filtro por usuario se llena la variable de filtro con los mensajes a buscar del usuario
+    if (filterUser !== null){
+        filter = {user: filterUser}; // Obtenemos todos los mensajes que tengan como usuario el usuario ingresado en el query
+    };
+    
+    const messages = await Model.find(filter); // Obtenemos todos los mensajes con .find
+
     return messages; // Retornamos todos los mensajes obtenidos
 };
 
@@ -57,11 +53,23 @@ async function getMessage(id){
     return foundMessage;
 };
 
+// Función para borrar un mensaje de la lista, es asincrona porque demora en borrar la info de la BD
+async function deleteMessage(id){
+
+    // Borramos el mensaje buscandolo por el id que nos llega
+    const result = await Model.deleteOne({
+        _id: id
+    });
+
+    // Retornamos el valor del nuevo mensaje
+    return result;
+};
+
 
 module.exports = {
     add: addMessage,
     list: getMessages,
     updateText: updateText,
-    getMessage: getMessage
-    // delete
+    getMessage: getMessage,
+    deleteMessage: deleteMessage
 }

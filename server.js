@@ -6,8 +6,14 @@ const express = require('express');  // import express from 'express'; => Import
 // Para trabajar con el body de la petición
 const bodyParser = require('body-parser');
 
+// Importamos nuestro modulo de conexión a la base de datos
+const db = require('./db');
+
 // Importamos nuestro modulo de rutas
 const router = require('./network/routes');
+
+// Conectamos a nuestra base de datos y enviamos URI
+db('mongodb+srv://user:user1234@telegrom.x79d4.mongodb.net/?retryWrites=true&w=majority');
 
 // Inicializamos nuestro express
 var app = express();
