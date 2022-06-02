@@ -1,13 +1,13 @@
 // Importamos nuestro modulo de base de datos
 const store = require('./store');
 
-function addMessage(user, message) {
+function addMessage(chat, user, message) {
     
     // Creamos una promesa para avisarle a 'Network' que es el que llama a esta función si ha ocurrido un error
     return new Promise((resolve, reject) => {
         
         // Si no me llega el usuario o el mensaje entonces elevo un error
-        if(!user || !message){
+        if(!chat || !user || !message){
             console.error('[MessageController] No hay usuario o mensaje');
             reject('Los datos son incorrectos');
             return false;
@@ -15,6 +15,7 @@ function addMessage(user, message) {
 
         // Guardamos la información recibida en un JSON
         const fullMessage = {
+            chat: chat,
             user: user,
             message: message,
             date: new Date()

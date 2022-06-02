@@ -7,6 +7,10 @@ const Schema = mongoose.Schema;
 
 // A traves de un objeto schema podemos definir por ejemplo los tipos de los datos que vamos a tener y si son obligatorios
 const mySchema = new Schema({
+    chat: {
+        type: Schema.ObjectId,
+        ref: 'Chat'
+    },
     user: {
         type: Schema.ObjectId,
         ref: 'User'

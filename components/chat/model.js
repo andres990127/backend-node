@@ -7,12 +7,10 @@ const Schema = mongoose.Schema;
 
 // A traves de un objeto schema podemos definir por ejemplo los tipos de los datos que vamos a tener y si son obligatorios
 const mySchema = new Schema({
-    users: [ // Se declara la 'columna' users como un objeto de varios usuarios (Entidad User)
-        {
-            type: Schema.ObjectId,
-            ref: 'User',
-        }
-    ]
+    users: [{
+        type: Schema.ObjectId,
+        ref: 'User',
+    }],
 });
 
 // Definimos el modelo pasandole los parámetros de cómo se va a llamar la colección(tabla) en mongo y el schema

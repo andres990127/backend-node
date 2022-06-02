@@ -1,6 +1,9 @@
 // Importamos express
 const express = require('express');  // import express from 'express'; => Importe de ECMASCRIPT6
 
+// Importamos multer para el manejo de archivos
+const multer = require('multer');
+
 // Importamos nuestro modulo de respuestas HTTP
 const response = require('../../network/response');
 
@@ -9,6 +12,11 @@ const controller = require('./controller');
 
 // Router de express para diferenciar entre peticiones
 const router = express.Router();
+
+// Creamos una instancia del multer que envia los archivos a la carpeta uploads
+const upload = multer({
+    dest: 'uploads/'
+});
 
 // Configuro respuesta para una petición get a la dirección "/message"
 router.get('/',(req,res)=>{
@@ -26,10 +34,10 @@ router.get('/',(req,res)=>{
 });
 
 // Configuro respuesta para una petición post a la dirección "/message"
-router.post('/',(req,res)=>{
+router.post('/', upload.single('file'), (req,res)=>{
 
     // Esperamos recibir en el body un JSON con el usuario creador del mensaje y el mensaje
-    controller.addMessage(req.body.user, req.body.message)
+    controller.addMessage(req.body.chat, req.body.user, req.body.message)
         .then((fullMessage)=>{
             response.success(req, res, 'Se ha creado el mensaje: '+ fullMessage.message, 201); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
         })

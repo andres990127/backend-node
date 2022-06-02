@@ -27,7 +27,7 @@ async function getMessages(filterUser) {
             }); 
 
         resolve(messages); // Retornamos todos los mensajes obtenidos
-    })
+    });
 
 };
 
