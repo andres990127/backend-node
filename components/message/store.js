@@ -8,19 +8,27 @@ function addMessage(message){
 };
 
 // Función para obtener mensajes de la lista, es asincrona porque demora en pedir la info de la BD
-async function getMessages(filterUser){
+async function getMessages(filterUser) {
 
-    // Filtro para buscar usuarios, solo se llena si en el query se esta enviando un usuario especifico al cual buscarle los mensajes
-    let filter = {};
+    return new Promise((resolve, reject) => {
+        // Filtro para buscar usuarios, solo se llena si en el query se esta enviando un usuario especifico al cual buscarle los mensajes
+        let filter = {};
 
-    // Si existe un filtro por usuario se llena la variable de filtro con los mensajes a buscar del usuario
-    if (filterUser !== null){
-        filter = {user: filterUser}; // Obtenemos todos los mensajes que tengan como usuario el usuario ingresado en el query
-    };
-    
-    const messages = await Model.find(filter); // Obtenemos todos los mensajes con .find
+        // Si existe un filtro por usuario se llena la variable de filtro con los mensajes a buscar del usuario
+        if (filterUser !== null) {
+            filter = { user: filterUser }; // Obtenemos todos los mensajes que tengan como usuario el usuario ingresado en el query
+        };
 
-    return messages; // Retornamos todos los mensajes obtenidos
+        // Obtenemos todos los mensajes con .find
+        const messages = Model.find(filter)
+            .populate('user') // Buscamos registro de otra entidad con el id del campo 'User'
+            .catch(e => {
+                reject(e);
+            }); 
+
+        resolve(messages); // Retornamos todos los mensajes obtenidos
+    })
+
 };
 
 // Función para actualizar mensajes de la lista, es asincrona porque demora en pedir la info de la BD
