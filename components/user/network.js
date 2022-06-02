@@ -10,6 +10,19 @@ const controller = require('./controller');
 // Router de express para diferenciar entre peticiones
 const router = express.Router();
 
+// Configuro respuesta para una petición get a la dirección "/user"
+router.get('/',(req,res)=>{
+
+    // Esperamos recibir en el query si se quiere obtener un usuario en especifico
+    controller.getUsers(req.query.user || null)
+        .then((data)=>{
+            response.success(req, res, data, 200); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
+        })
+        .catch( e => {
+            response.error(req, res, 'Internal error', 500, 'No se pudo crear el usuario: ' + e); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de fallo
+        });
+});
+
 // Configuro respuesta para una petición post a la dirección "/user"
 router.post('/',(req,res)=>{
 
