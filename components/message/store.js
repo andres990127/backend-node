@@ -1,5 +1,3 @@
-// Generamos un 'MOK' de una base de datos para igualar su funcionamiento
-
 // Importamos nuestro modelo definido
 const Model = require('./model');
 

@@ -1,6 +1,5 @@
 // Importamos express
 const express = require('express');  // import express from 'express'; => Importe de ECMASCRIPT6
-const { route } = require('express/lib/application');
 
 // Importamos nuestro modulo de respuestas HTTP
 const response = require('../../network/response');
