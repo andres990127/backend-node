@@ -1,7 +1,7 @@
 // Importamos nuestro modulo de base de datos
 const store = require('./store');
 
-function addMessage(chat, user, message) {
+function addMessage(chat, user, message, file) {
     
     // Creamos una promesa para avisarle a 'Network' que es el que llama a esta función si ha ocurrido un error
     return new Promise((resolve, reject) => {
@@ -13,12 +13,21 @@ function addMessage(chat, user, message) {
             return false;
         };
 
+        // Creamos variable para almacenar la URL de la imagen si es enviada en un mensaje
+        let fileUrl = '';
+
+        // Si llega URL de imágen se concatena a la ubicación que se están guardando
+        if(file){
+            fileUrl = 'http://localhost:3000/app/files/'+ file.filename;
+        }
+
         // Guardamos la información recibida en un JSON
         const fullMessage = {
             chat: chat,
             user: user,
             message: message,
-            date: new Date()
+            date: new Date(),
+            file: fileUrl
         };
 
         // Imprimimos la información que recibimos en la petición

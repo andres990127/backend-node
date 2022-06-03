@@ -16,7 +16,8 @@ const mySchema = new Schema({
         ref: 'User'
     },
     message: { type: String, required: true },
-    date: Date
+    date: Date,
+    file: String
 });
 
 // Definimos el modelo pasandole los parámetros de cómo se va a llamar la colección(tabla) en mongo y el schema

@@ -15,7 +15,7 @@ const router = express.Router();
 
 // Creamos una instancia del multer que envia los archivos a la carpeta uploads
 const upload = multer({
-    dest: 'uploads/'
+    dest: 'public/files/'
 });
 
 // Configuro respuesta para una petición get a la dirección "/message"
@@ -37,7 +37,7 @@ router.get('/',(req,res)=>{
 router.post('/', upload.single('file'), (req,res)=>{
 
     // Esperamos recibir en el body un JSON con el usuario creador del mensaje y el mensaje
-    controller.addMessage(req.body.chat, req.body.user, req.body.message)
+    controller.addMessage(req.body.chat, req.body.user, req.body.message, req.file)
         .then((fullMessage)=>{
             response.success(req, res, 'Se ha creado el mensaje: '+ fullMessage.message, 201); // Llama a nuestro modulo de response y ejecuta nuestra respuesta de exito
         })
