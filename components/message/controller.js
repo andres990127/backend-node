@@ -1,3 +1,9 @@
+// Importamos nuestro modulo de configuraciones
+const config  = require('../../config');
+
+// Importamos nuestro modulo de socket
+const { socket } = require('../../socket');
+
 // Importamos nuestro modulo de base de datos
 const store = require('./store');
 
@@ -18,8 +24,8 @@ function addMessage(chat, user, message, file) {
 
         // Si llega URL de imágen se concatena a la ubicación que se están guardando
         if(file){
-            fileUrl = 'http://localhost:3000/app/files/'+ file.filename;
-        }
+            fileUrl = config.host + ';' + config.port + config.publicRoute + '/' + config.filesRoute + '/' + file.filename;
+        };
 
         // Guardamos la información recibida en un JSON
         const fullMessage = {
@@ -32,6 +38,9 @@ function addMessage(chat, user, message, file) {
 
         // Imprimimos la información que recibimos en la petición
         store.add(fullMessage);
+
+        // Enviamos el mensaje por el socket
+        socket.io.emit('message', fullMessage);
 
         // Resolvemos la promesa
         resolve(fullMessage);

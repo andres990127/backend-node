@@ -1,6 +1,9 @@
 // Importamos express
 const express = require('express');  // import express from 'express'; => Importe de ECMASCRIPT6
 
+// Importamos nuestro modulo de configuraciones
+const config  = require('../../config');
+
 // Importamos multer para el manejo de archivos
 const multer = require('multer');
 
@@ -15,7 +18,7 @@ const router = express.Router();
 
 // Creamos una instancia del multer que envia los archivos a la carpeta uploads
 const upload = multer({
-    dest: 'public/files/'
+    dest: 'public/' + config.filesRoute + '/',
 });
 
 // Configuro respuesta para una petición get a la dirección "/message"
